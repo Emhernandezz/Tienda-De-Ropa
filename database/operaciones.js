@@ -3,14 +3,14 @@ const { MongoClient } = require('mongodb');
 
 const uri = process.env.MONGO_URI;
 
-const { MongoClient } = require('mongodb');
-
 async function run() {
   const client = new MongoClient(uri);
 
   try {
     await client.connect();
     const db = client.db('FashionStyle');
+
+    // ================= CREACIÓN DE COLECCIONES Y CRUD =================
 
     // Colección usuarios
     const usuarios = db.collection('usuarios');
@@ -141,16 +141,16 @@ async function run() {
     // Eliminar una venta
     await ventas.deleteOne({ prenda: "Camisa Blanca", cantidad: 1 });
 
-    // Consultas agregadas (aggregate)
+    // ================= CONSULTAS CON COMENTARIOS =================
 
-    // 1. Cantidad total vendida en fecha específica
+    // Consulta 1: Obtener la cantidad total vendida de prendas en una fecha específica
     const totalVendido = await ventas.aggregate([
       { $match: { fecha: new Date("2025-06-24") } },
       { $group: { _id: "$fecha", total_vendido: { $sum: "$cantidad" } } }
     ]).toArray();
     console.log("Total vendido el 2025-06-24:", totalVendido);
 
-    // 2. Lista de marcas con al menos una venta
+    // Consulta 2: Obtener la lista de todas las marcas que tienen al menos una venta
     const marcasVendidas = await ventas.aggregate([
       {
         $lookup: {
@@ -169,7 +169,7 @@ async function run() {
     ]).toArray();
     console.log("Marcas con ventas:", marcasVendidas);
 
-    // 3. Prendas vendidas y stock restante
+    // Consulta 3: Obtener prendas vendidas y su cantidad restante en stock
     const prendasStock = await prendas.aggregate([
       {
         $lookup: {
@@ -189,7 +189,7 @@ async function run() {
     ]).toArray();
     console.log("Prendas y stock:", prendasStock);
 
-    // 4. Top 5 marcas más vendidas
+    // Consulta 4: Obtener el listado de las 5 marcas más vendidas y su cantidad de ventas
     const topMarcas = await ventas.aggregate([
       {
         $lookup: {
