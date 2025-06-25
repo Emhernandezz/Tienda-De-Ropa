@@ -1,0 +1,17 @@
+[
+  {
+    "_id": { "$oid": "650000000000000000000010" },
+    "nombre": "Nike",
+    "pais_origen": "Estados Unidos"
+  },
+  {
+    "_id": { "$oid": "650000000000000000000011" },
+    "nombre": "Adidas",
+    "pais_origen": "Alemania"
+  },
+  {
+    "_id": { "$oid": "650000000000000000000012" },
+    "nombre": "Puma",
+    "pais_origen": "Alemania"
+  }
+]
